@@ -8,19 +8,19 @@ __all__ = ['MovieController']
 import tw2.core
 import tw2.forms
 import tw2.sqla
+import tw2.dynforms
 
 class MovieForm(tw2.sqla.DbFormPage):
     entity = model.Movie
     title = 'Movie'
     resources = [tw2.core.CSSLink(link='/css/myapp.css')]
-    class child(tw2.forms.TableForm):
+    class child(tw2.dynforms.CustomisedTableForm):
         action = '/tw2_controllers/movie_submit'
         id = tw2.forms.HiddenField()
         title = tw2.forms.TextField(validator=tw2.core.Required)
         director = tw2.forms.TextField()
         genres = tw2.sqla.DbCheckBoxList(entity=model.Genre)
-        class cast(tw2.forms.GridLayout):
-            extra_reps = 5
+        class cast(tw2.dynforms.GrowingGridLayout):
             character = tw2.forms.TextField()
             actor = tw2.forms.TextField()
 
