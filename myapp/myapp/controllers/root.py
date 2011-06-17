@@ -13,6 +13,7 @@ from myapp import model
 from myapp.controllers.secure import SecureController
 
 from myapp.controllers.error import ErrorController
+from myapp.controllers.movie import MovieController
 
 __all__ = ['RootController']
 
@@ -36,6 +37,7 @@ class RootController(BaseController):
     admin = AdminController(model, DBSession, config_type=TGAdminConfig)
 
     error = ErrorController()
+    movie = MovieController()
 
     @expose('myapp.templates.index')
     def index(self):
