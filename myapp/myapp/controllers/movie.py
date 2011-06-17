@@ -9,6 +9,7 @@ import tw2.core
 import tw2.forms
 import tw2.sqla
 import tw2.dynforms
+import tw2.jqplugins.jqgrid
 
 class MovieForm(tw2.sqla.DbFormPage):
     entity = model.Movie
@@ -34,6 +35,23 @@ class MovieIndex(tw2.sqla.DbListPage):
         id = tw2.forms.LinkField(link='/movie/movie?id=$', text='Edit', label=None)
 
 
+class GridWidget(tw2.jqplugins.jqgrid.SQLAjqGridWidget):
+    id = 'grid_widget'
+    entity = model.Movie
+    excluded_columns = ['id']
+    prmFilter = {'stringResult': True, 'searchOnEnter': False}
+    pager_options = { "search" : True, "refresh" : True, "add" : False, }
+    options = {
+        'url': '/tw2_controllers/db_jqgrid/',
+        'rowNum':15,
+        'rowList':[15,30,50],
+        'viewrecords':True,
+        'imgpath': 'scripts/jqGrid/themes/green/images',
+        'width': 900,
+        'height': 'auto',
+    }
+
+
 class MovieController(BaseController):
 
     @expose('myapp.templates.widget')
@@ -49,3 +67,9 @@ class MovieController(BaseController):
         mw = tw2.core.core.request_local()['middleware']
         mw.controllers.register(w, 'movie_submit')
         return dict(widget=w, page='movie')
+
+    @expose('myapp.templates.widget')
+    def grid(self, *args, **kw):
+        mw = tw2.core.core.request_local()['middleware']
+        mw.controllers.register(GridWidget, 'db_jqgrid')
+        return dict(widget=GridWidget, page='movie')
