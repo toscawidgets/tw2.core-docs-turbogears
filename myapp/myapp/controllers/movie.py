@@ -7,14 +7,18 @@ __all__ = ['MovieController']
 
 import tw2.core
 import tw2.forms
+import tw2.sqla
 
-class MovieForm(tw2.forms.FormPage):
+class MovieForm(tw2.sqla.DbFormPage):
+    entity = model.Movie
     title = 'Movie'
     resources = [tw2.core.CSSLink(link='/css/myapp.css')]
     class child(tw2.forms.TableForm):
+        action = '/tw2_controllers/movie_submit'
+        id = tw2.forms.HiddenField()
         title = tw2.forms.TextField(validator=tw2.core.Required)
         director = tw2.forms.TextField()
-        genres = tw2.forms.CheckBoxList(options=['Action', 'Comedy', 'Romance', 'Sci-fi'])
+        genres = tw2.sqla.DbCheckBoxList(entity=model.Genre)
         class cast(tw2.forms.GridLayout):
             extra_reps = 5
             character = tw2.forms.TextField()
@@ -24,4 +28,7 @@ class MovieController(BaseController):
     @expose('myapp.templates.widget')
     def movie(self, *args, **kw):
         w = MovieForm(redirect='/movie/').req()
+        w.fetch_data(request)
+        mw = tw2.core.core.request_local()['middleware']
+        mw.controllers.register(w, 'movie_submit')
         return dict(widget=w, page='movie')

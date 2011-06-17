@@ -10,6 +10,8 @@ import transaction
 
 def bootstrap(command, conf, vars):
     """Place any commands to setup myapp here"""
+    for name in ['Action', 'Comedy', 'Romance', 'Sci-fi']:
+        model.DBSession.add(model.Genre(name=name))
 
     # <websetup.bootstrap.before.auth
     from sqlalchemy.exc import IntegrityError

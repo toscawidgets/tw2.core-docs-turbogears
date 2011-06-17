@@ -14,6 +14,7 @@ convert them into boolean, for example, you should use the
 """
 
 from tg.configuration import AppConfig
+from tw2.core.middleware import ControllersApp as TW2ControllersApp
 
 import myapp
 from myapp import model
@@ -64,3 +65,9 @@ base_config.sa_auth.post_logout_url = '/post_logout'
 
 # Enable tw2
 base_config.use_toscawidgets2 = True
+
+# Setup tw2 controllers (nasty!)
+base_config.custom_tw2_config['controllers'] = TW2ControllersApp()
+base_config.custom_tw2_config['controller_prefix'] = '/tw2_controllers/'
+base_config.custom_tw2_config['serve_controllers'] = True
+
