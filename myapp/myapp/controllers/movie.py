@@ -64,12 +64,10 @@ class MovieController(BaseController):
     def movie(self, *args, **kw):
         w = MovieForm(redirect='/movie/').req()
         w.fetch_data(request)
-        mw = tw2.core.core.request_local()['middleware']
-        mw.controllers.register(w, 'movie_submit')
+        tw2.core.register_controller(w, 'movie_submit')
         return dict(widget=w, page='movie')
 
     @expose('myapp.templates.widget')
     def grid(self, *args, **kw):
-        mw = tw2.core.core.request_local()['middleware']
-        mw.controllers.register(GridWidget, 'db_jqgrid')
+        tw2.core.register_controller(GridWidget, 'db_jqgrid')
         return dict(widget=GridWidget, page='movie')
