@@ -4,8 +4,7 @@
 
 from tg import TGController, tmpl_context
 from tg.render import render
-from tg import request
-from pylons.i18n import _, ungettext, N_
+from tg.i18n import ugettext as _, ungettext
 import myapp.model as model
 
 __all__ = ['BaseController']
@@ -20,12 +19,9 @@ class BaseController(TGController):
 
     """
 
-    def __call__(self, environ, start_response):
+    def __call__(self, environ, context):
         """Invoke the Controller"""
         # TGController.__call__ dispatches to the Controller method
-        # the request is routed to. This routing information is
-        # available in environ['pylons.routes_dict']
+        # the request is routed to.
 
-        request.identity = request.environ.get('repoze.who.identity')
-        tmpl_context.identity = request.identity
-        return TGController.__call__(self, environ, start_response)
+        return TGController.__call__(self, environ, context)

@@ -14,6 +14,7 @@ convert them into boolean, for example, you should use the
 """
 
 from tg.configuration import AppConfig
+
 from tw2.core.middleware import ControllersApp as TW2ControllersApp
 
 import myapp
@@ -22,6 +23,7 @@ from myapp.lib import app_globals, helpers
 
 base_config = AppConfig()
 base_config.renderers = []
+base_config.prefer_toscawidgets2 = True
 
 base_config.package = myapp
 
@@ -34,40 +36,7 @@ base_config.renderers.append('mako')
 base_config.use_sqlalchemy = True
 base_config.model = myapp.model
 base_config.DBSession = myapp.model.DBSession
-# Configure the authentication backend
 
-# YOU MUST CHANGE THIS VALUE IN PRODUCTION TO SECURE YOUR APP 
-base_config.sa_auth.cookie_secret = "ChangeME" 
-
-base_config.auth_backend = 'sqlalchemy'
-base_config.sa_auth.dbsession = model.DBSession
-# what is the class you want to use to search for users in the database
-base_config.sa_auth.user_class = model.User
-# what is the class you want to use to search for groups in the database
-base_config.sa_auth.group_class = model.Group
-# what is the class you want to use to search for permissions in the database
-base_config.sa_auth.permission_class = model.Permission
-
-# override this if you would like to provide a different who plugin for
-# managing login and logout of your application
-base_config.sa_auth.form_plugin = None
-
-# override this if you are using a different charset for the login form
-base_config.sa_auth.charset = 'utf-8'
-
-# You may optionally define a page where you want users to be redirected to
-# on login:
-base_config.sa_auth.post_login_url = '/post_login'
-
-# You may optionally define a page where you want users to be redirected to
-# on logout:
-base_config.sa_auth.post_logout_url = '/post_logout'
-
-# Enable tw2
-base_config.use_toscawidgets2 = True
-
-# Setup tw2 controllers (nasty!)
 base_config.custom_tw2_config['controllers'] = TW2ControllersApp()
 base_config.custom_tw2_config['controller_prefix'] = '/tw2_controllers/'
 base_config.custom_tw2_config['serve_controllers'] = True
-

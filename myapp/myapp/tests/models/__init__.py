@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
 """Unit test suite for the models of the application."""
-from nose.tools import assert_equals
 
+from nose.tools import eq_
 from myapp.model import DBSession
+from myapp.tests import load_app
 from myapp.tests import setup_db, teardown_db
 
 __all__ = ['ModelTest']
 
-# Create an empty database before we start our tests for this module
+
 def setup():
-    """Function called by nose on module load"""
+    """Setup test fixture for all model tests."""
+    load_app()
     setup_db()
 
-# Tear down that database
+
 def teardown():
-    """Function called by nose after all tests in this module ran"""
+    """Tear down test fixture for all model tests."""
     teardown_db()
 
 
@@ -25,7 +27,7 @@ class ModelTest(object):
     attrs = {}
 
     def setUp(self):
-        """Prepare model test fixture."""
+        """Setup test fixture for each model test method."""
         try:
             new_attrs = {}
             new_attrs.update(self.attrs)
@@ -39,7 +41,7 @@ class ModelTest(object):
             raise
 
     def tearDown(self):
-        """Finish model test fixture."""
+        """Tear down test fixture for each model test method."""
         DBSession.rollback()
 
     def do_get_dependencies(self):
@@ -58,5 +60,5 @@ class ModelTest(object):
     def test_query_obj(self):
         """Model objects can be queried"""
         obj = DBSession.query(self.klass).one()
-        for key, value in self.attrs.iteritems():
-            assert_equals(getattr(obj, key), value)
+        for key, value in self.attrs.items():
+            eq_(getattr(obj, key), value)

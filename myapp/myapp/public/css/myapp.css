@@ -2,6 +2,7 @@ th {
     vertical-align: top;
     text-align: left;
     font-weight: normal;
+    padding: 3px;
 }
 
 ul {
@@ -10,4 +11,12 @@ ul {
 
 .required th {
     font-weight: bold;
+}
+
+th label {
+    font-weight: bold;
+}
+
+td label {
+    display: inline;
 }

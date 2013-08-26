@@ -1,5 +1,5 @@
 #
-# myapp - TurboGears configuration
+# myapp - TurboGears 2 production environment configuration
 #
 # The %(here)s variable will be replaced with the parent directory of this file
 #
@@ -10,10 +10,10 @@
 debug = false
 email_to = you@yourdomain.com
 smtp_server = localhost
-error_email_from = paste@localhost
+error_email_from = turbogears@localhost
 
 [server:main]
-use = egg:Paste#http
+use = egg:gearbox#wsgiref
 host = 0.0.0.0
 port = 8080
 
@@ -55,7 +55,7 @@ templating.genshi.method = xhtml
 # http://docs.python.org/lib/logging-config-fileformat.html
 
 [loggers]
-keys = root, myapp, sqlalchemy, auth
+keys = root, myapp, sqlalchemy
 
 [handlers]
 keys = console
@@ -80,13 +80,6 @@ qualname = sqlalchemy.engine
 # "level = INFO" logs SQL queries.
 # "level = DEBUG" logs SQL queries and results.
 # "level = WARN" logs neither.  (Recommended for production systems.)
-
-# A logger for authentication, identification and authorization -- this is
-# repoze.who and repoze.what:
-[logger_auth]
-level = WARN
-handlers =
-qualname = auth
 
 # If you create additional handlers, add them as a key to [handlers]
 [handler_console]

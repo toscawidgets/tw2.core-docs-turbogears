@@ -1,13 +1,22 @@
 # -*- coding: utf-8 -*-
-#quckstarted Options:
+#quickstarted Options:
 #
 # sqlalchemy: True
-# auth:       sqlalchemy
+# auth:       False
 # mako:       True
 #
 #
 
+#This is just a work-around for a Python2.7 issue causing
+#interpreter crash at exit when trying to log an info message.
+try:
+    import logging
+    import multiprocessing
+except:
+    pass
+
 import sys
+py_version = sys.version_info[:2]
 
 try:
     from setuptools import setup, find_packages
@@ -19,11 +28,21 @@ except ImportError:
 testpkgs=['WebTest >= 1.2.3',
                'nose',
                'coverage',
-               'wsgiref',
-               'repoze.who-testutil >= 1.0.1',
                ]
-if sys.version_info[:2] == (2,4):
-    testpkgs.extend(['hashlib', 'pysqlite'])
+
+install_requires=[
+    "TurboGears2 >= 2.3.0b3",
+    "Babel",
+    "Mako",
+    "zope.sqlalchemy >= 0.4",
+    "sqlalchemy",
+    "alembic",
+    "tw2.core",
+    "tw2.forms",
+    "tw2.dynforms",
+    "tw2.sqla",
+    "tw2.jqplugins.jqgrid",
+    ]
 
 setup(
     name='myapp',
@@ -32,31 +51,8 @@ setup(
     author='',
     author_email='',
     #url='',
-    install_requires=[
-        "TurboGears2 >= 2.1.1",
-        "Mako",
-        "zope.sqlalchemy >= 0.4",
-        "repoze.tm2 >= 1.0a5",
-	"sqlalchemy",
-        "sqlalchemy-migrate",
-        "repoze.what-quickstart",
-        "repoze.what >= 1.0.8",
-        "repoze.what-quickstart",
-        "repoze.who-friendlyform >= 1.0.4",
-        "repoze.what-pylons >= 1.0",
-        "repoze.what.plugins.sql",
-        "repoze.who==1.0.19",
-        "tgext.admin >= 0.3.9",
-        "tw.forms",
-        "tw2.core",
-        "tw2.forms",
-        "tw2.dynforms",
-        "tw2.sqla",
-        "tw2.jqplugins.jqgrid",
-        ],
-    setup_requires=["PasteScript >= 1.7"],
-    paster_plugins=['PasteScript', 'Pylons', 'TurboGears2', 'tg.devtools'],
     packages=find_packages(exclude=['ez_setup']),
+    install_requires=install_requires,
     include_package_data=True,
     test_suite='nose.collector',
     tests_require=testpkgs,
@@ -68,15 +64,16 @@ setup(
             ('templates/**.mako', 'mako', None),
             ('public/**', 'ignore', None)]},
 
-    entry_points="""
-    [paste.app_factory]
-    main = myapp.config.middleware:make_app
-
-    [paste.app_install]
-    main = pylons.util:PylonsInstaller
-    """,
+    entry_points={
+        'paste.app_factory': [
+            'main = myapp.config.middleware:make_app'
+        ],
+        'gearbox.plugins': [
+            'turbogears-devtools = tg.devtools'
+        ]
+    },
     dependency_links=[
-        "http://www.turbogears.org/2.1/downloads/current/"
+        "http://tg.gy/230"
         ],
     zip_safe=False
 )

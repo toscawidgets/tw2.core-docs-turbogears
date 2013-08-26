@@ -41,6 +41,7 @@ metadata = DeclarativeBase.metadata
 def init_model(engine):
     """Call me before using any of the tables or classes in the model."""
     DBSession.configure(bind=engine)
+
     # If you are using reflection to introspect your database and create
     # table objects for you, your tables must be defined and mapped inside
     # the init_model function, so that the engine is available if you
@@ -57,7 +58,6 @@ def init_model(engine):
 
     #mapper(Reflected, t_reflected)
 
-
 # Import your model modules here.
-from myapp.model.auth import User, Group, Permission
 from myapp.model.movie import Movie, Genre, Cast
+
